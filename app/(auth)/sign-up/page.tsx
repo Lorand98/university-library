@@ -1,6 +1,7 @@
 "use client";
 
 import AuthForm from "@/components/AuthForm";
+import { signUp } from "@/lib/actions";
 import { signUpSchema } from "@/lib/validations";
 import React from "react";
 
@@ -16,7 +17,7 @@ const Page = () => {
         universityCard: "",
         password: "",
       }}
-      onSubmit={() => {}}
+      onSubmit={signUp}
     />
   );
 };
