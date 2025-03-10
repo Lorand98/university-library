@@ -1,7 +1,9 @@
 "use server";
 
 import { signIn } from "@/auth";
+import config from "@/lib/config";
 import ratelimit from "@/lib/ratelimit";
+import { workflowClient } from "@/lib/workflow";
 import { db } from "@/server/db";
 import { users } from "@/server/schema";
 import { hash } from "bcryptjs";
@@ -73,6 +75,14 @@ export const signUp = async (params: AuthCredentials) => {
       password: hashedPassword,
       universityCard,
       universityId,
+    });
+
+    await workflowClient.trigger({
+      url: `${config.env.prodAPIEndpoint}/api/workflows/onboarding`,
+      body: {
+        email,
+        fullName,
+      },
     });
 
     await signInWithCredentials({ email, password });
